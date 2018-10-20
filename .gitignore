@@ -1,0 +1,10 @@
+*.pyc
+.DS_Store
+__pycache__
+*.dot
+*.pdf
+venv/
+build/
+dist/
+*.egg-info/
+.idea/
