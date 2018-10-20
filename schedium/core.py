@@ -41,7 +41,9 @@ class Schedium(object):
 
     def execute_now(self, target: typing.Callable, vargs: typing.Optional[tuple] = None,
                     kwargs: dict = None):
-        self._task_handler.execute_target(target, vargs or (), kwargs or {})
+        t = Timer(interval=0, function=target, args=vargs or (), kwargs=kwargs or {})
+        t.daemon = True
+        t.start()
 
     def execute_interval(self, interval: typing.Union[int, float], target: typing.Callable,
                          vargs: typing.Optional[tuple] = None,
