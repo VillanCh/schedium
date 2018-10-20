@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # coding:utf-8
 import typing
-import threading
-from collections import OrderedDict
+import traceback
 from datetime import datetime, timedelta
 
 
@@ -73,7 +72,11 @@ class DefaultTaskHandler(object):
         # ret = threading.Thread(target=target, args=vargs, kwargs=kwargs)
         # ret.daemon = True
         # ret.start()
-        target(*vargs, **kwargs)
+        try:
+            target(*vargs, **kwargs)
+        except Exception:
+            traceback.print_exc()
+
         task: SchediumTask = self.tasks_table.get(id)
         if not task:
             return
