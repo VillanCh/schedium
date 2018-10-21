@@ -66,7 +66,7 @@ class Schedium(object):
         now = datetime.now()
         interval = timedelta(seconds=after)
         end = now + interval
-        self._task_handler.add_task(target=target, vargs=vargs, kwargs=kwargs, id=_id, start=now, end=end,
+        self._task_handler.add_task(target=target, vargs=vargs, kwargs=kwargs or {}, id=_id, start=now, end=end,
                                     interval=interval.total_seconds(), first=False)
         self.update()
 
