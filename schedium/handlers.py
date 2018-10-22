@@ -33,7 +33,25 @@ class SchediumTask(object):
         return "<SchediumTask id:{}>".format(self.id)
 
 
-class DefaultTaskHandler(object):
+class TaskHandlerBase(object):
+
+    def get_next_task(self):
+        raise NotImplementedError()
+
+    def add_task(self, target: typing.Callable, vargs: typing.Optional[tuple] = None,
+                 kwargs: typing.Optional[dict] = None,
+                 id: str = None, start: datetime = None, end: datetime = None,
+                 interval: typing.Union[int, float] = None, first: bool = None):
+        raise NotImplementedError()
+
+    def execute_target(self, target: typing.Callable, vargs: typing.Tuple, kwargs: typing.Mapping, id=None):
+        raise NotImplementedError()
+
+    def cancel(self, id):
+        raise NotImplementedError()
+
+
+class DefaultTaskHandler(TaskHandlerBase):
 
     def __init__(self):
         self.tasks = []
