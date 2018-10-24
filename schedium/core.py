@@ -23,12 +23,14 @@ class _CurrentTask(Timer):
 
 class Schedium(object):
 
-    def __init__(self, update_interval=30, task_handler=None):
+    def __init__(self, update_interval=30, task_handler=None, timezone=None):
         self._task_handler = task_handler or DefaultTaskHandler()
         self._current_task: typing.Optional[_CurrentTask] = None
 
         self._auto_update_thread: Thread = None
         self._auto_update_event = Event()
+
+        self._timezone = timezone
 
         self.update()
 
@@ -63,7 +65,7 @@ class Schedium(object):
     def execute_later(self, after: typing.Union[int, float], target: typing.Callable, vargs: tuple = (),
                       kwargs: typing.Optional[typing.Mapping[str, str]] = None, id: str = None):
         _id = id or uuid.uuid4().hex
-        now = datetime.now()
+        now = datetime.now(tz=self._timezone)
         interval = timedelta(seconds=after)
         end = now + interval
         self._task_handler.add_task(target=target, vargs=vargs, kwargs=kwargs or {}, id=_id, start=now, end=end,
